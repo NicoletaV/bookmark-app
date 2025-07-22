@@ -1,0 +1,12 @@
+<div class="list">
+  <ul>
+    <li *ngFor="let filter of standardFilters">
+      <p>{{ filter }}</p>
+      <ul>
+        <li *ngFor="let bookmark of getBookmarks(filter)">
+          {{ bookmark }}
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>

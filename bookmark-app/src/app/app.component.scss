@@ -1,0 +1,18 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  align-items: center;
+}
+
+header, footer, .content {
+  width: 100%;
+}
+
+header, footer {
+  flex: 0 0 7%;
+}
+
+.content {
+  flex-grow: 1;
+}
