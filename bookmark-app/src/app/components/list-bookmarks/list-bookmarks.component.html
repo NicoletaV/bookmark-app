@@ -1,12 +1,18 @@
-<div class="list">
-  <ul>
-    <li *ngFor="let filter of standardFilters">
-      <p>{{ filter }}</p>
+<div class="list-wrapper">
+  <div *ngFor="let standardFilter of standardFilters; index as i" class="list">
+    <h2 class="list-filter">{{ standardFilter }}</h2>
+    <div class="items-wrapper">
       <ul>
-        <li *ngFor="let bookmark of getBookmarks(filter)">
-          {{ bookmark }}
+        <li *ngFor="let bookmark of bookmarkList | filterPipe: standardFilters[i]" class="item">
+          <mat-icon class="item-icon">bookmark</mat-icon>
+          <div class="item-text">
+            <span id="name">{{ bookmark.name }}</span>
+            <a href=`${bookmark.url}`>{{ bookmark.url }}</a>
+          </div>
+          <mat-icon class="item-icon edit">edit</mat-icon>
         </li>
       </ul>
-    </li>
-  </ul>
+    </div>
+    <mat-divider></mat-divider>
+  </div>
 </div>

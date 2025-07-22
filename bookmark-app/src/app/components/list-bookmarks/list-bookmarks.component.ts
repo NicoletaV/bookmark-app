@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { MatDivider, MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+ import { MatListModule } from '@angular/material/list'; 
+import { catchError, from, map, Observable, shareReplay } from 'rxjs';
+import { Bookmark } from 'src/app/models/bookmark/bookmark';
+import { BookmarkService } from 'src/app/services/bookmark/bookmark.service';
+import { FilterPipe } from 'src/app/utils/filter-pipe.pipe';
 
 @Component({
   selector: 'app-list-bookmarks',
@@ -8,13 +15,40 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [
     CommonModule,
+    MatListModule,
+    MatIconModule,
+    MatDividerModule,
+    FilterPipe,
   ]
 })
-export class ListBookmarksComponent {
-  public standardFilters: string[] = ['Today', 'Yesterday', 'Older'];
+export class ListBookmarksComponent implements OnInit {
+  standardFilters: string[] = ['Today', 'Yesterday', 'Older'];
+  bookmarkList: Bookmark[] = [];
+  bookmark$: Observable<Bookmark[]> = from([])
+  bookmarkService = inject(BookmarkService);
 
-  getBookmarks(filter: string): string[] {
-    return ['b1', 'b2', 'b3'];
+  ngOnInit(): void {
+    this.bookmarkList = [];
+    this.getBookmarks();
+  }
+
+  getBookmarks() {
+    this.bookmark$ = this.bookmarkService.getAllBookmarks().pipe(
+      map(result => result),
+      catchError(err => {
+        console.error(err);
+        throw err;
+      }),
+      shareReplay(1)
+    );
+
+    this.bookmark$.subscribe({
+      next: result => {
+        console.log(result);
+        this.bookmarkList = result;
+      },
+      complete: () => console.log('Got all bookmarks')
+    });
   }
 
 
