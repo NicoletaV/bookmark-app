@@ -8,6 +8,10 @@ import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { BookmarkState } from 'src/app/store/reducers/bookmark.reducer';
+import { addBookmark } from 'src/app/store/actions/bookmark.action';
+import { Bookmark } from 'src/app/models/bookmark/bookmark.model';
 
 @Component({
   selector: 'app-add-bookmarks',
@@ -32,10 +36,17 @@ export class AddBookmarksComponent {
     url: new FormControl('', [Validators.required])
   });
   router = inject(Router);
+  store = inject(Store<BookmarkState>);
 
   addBookmark() {
-    console.log(this.bookmarkForm.controls.name.value)
-    console.log(this.bookmarkForm.controls.url.value)
+    this.store.dispatch({
+      type: 'ADD_BOOKMARK',
+      payload: <Bookmark> {
+        name: this.bookmarkForm.controls.name.value || '',
+        url: this.bookmarkForm.controls.url.value || '',
+        created: 'today'
+      }
+    });
     this.router.navigate(['/bookmarks']);
-    }
+  }
 }

@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Bookmark } from '../models/bookmark/bookmark';
+import { Bookmark } from '../models/bookmark/bookmark.model';
 
 @Pipe({
   name: 'filterPipe',

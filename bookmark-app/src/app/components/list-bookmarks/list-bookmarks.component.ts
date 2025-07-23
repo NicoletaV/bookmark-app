@@ -2,9 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list'; 
+import { Store } from '@ngrx/store';
 import { catchError, from, map, Observable, shareReplay } from 'rxjs';
-import { Bookmark } from 'src/app/models/bookmark/bookmark';
+import { Bookmark } from 'src/app/models/bookmark/bookmark.model';
 import { BookmarkService } from 'src/app/services/bookmark/bookmark.service';
+import { addAllBookmarks } from 'src/app/store/actions/bookmark.action';
+import { BookmarkState } from 'src/app/store/reducers/bookmark.reducer';
 import { FilterPipe } from 'src/app/utils/filter-pipe.pipe';
 
 @Component({
@@ -23,11 +26,18 @@ export class ListBookmarksComponent implements OnInit {
   standardFilters: string[] = ['Today', 'Yesterday', 'Older'];
   bookmarkList: Bookmark[] = [];
   bookmark$: Observable<Bookmark[]> = from([])
-  bookmarkService = inject(BookmarkService);
 
-  ngOnInit(): void {
-    this.bookmarkList = [];
-    this.getBookmarks();
+  bookmarkService = inject(BookmarkService);
+  store = inject(Store<BookmarkState>);
+  
+  ngOnInit(): void {  
+    this.store.select(state => state.bookmarkReducer.bookmarks).subscribe(res => {
+      this.bookmarkList = res;
+      console.log('Got all bookmarks - from store');
+      if (!this.bookmarkList || !this.bookmarkList.length) {
+        this.getBookmarks();
+      }
+    });
   }
 
   getBookmarks() {
@@ -44,9 +54,18 @@ export class ListBookmarksComponent implements OnInit {
       next: result => {
         console.log(result);
         this.bookmarkList = result;
+
+        this.store.dispatch({
+          type: 'ADD_ALL_BOOKMARKS',
+          payload: <Bookmark[]> this.bookmarkList
+        });
       },
-      complete: () => console.log('Got all bookmarks')
+      complete: () => console.log('Got all bookmarks - from db')
     });
+  }
+
+  onClick(url: string) {
+    window.open(url);
   }
 
 

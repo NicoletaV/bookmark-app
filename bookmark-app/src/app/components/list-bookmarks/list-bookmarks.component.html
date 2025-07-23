@@ -7,7 +7,7 @@
           <mat-icon class="item-icon">bookmark</mat-icon>
           <div class="item-text">
             <span class="name">{{ bookmark.name }}</span>
-            <a href=`${bookmark.url}`>{{ bookmark.url }}</a>
+            <a href="${bookmark.url}" (click)="onClick(bookmark.url)">{{ bookmark.url }}</a>
           </div>
           <mat-icon class="item-icon edit">edit</mat-icon>
         </li>

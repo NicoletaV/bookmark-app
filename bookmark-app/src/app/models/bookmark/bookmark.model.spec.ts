@@ -1,4 +1,4 @@
-import { Bookmark } from './bookmark';
+import { Bookmark } from './bookmark.model';
 
 describe('Bookmark', () => {
   it('should create an instance', () => {
