@@ -1,7 +1,13 @@
 <mat-toolbar color="primary" class="toolbar">
   <span>{{ title }}</span>
   <div>filter here</div>
-  <button mat-icon-button class="material-symbols-outlined" title="Add a new bookmark">
+  <button
+    mat-icon-button
+    color="accent"
+    class="material-symbols-outlined"
+    title="Add a new bookmark"
+    routerLink="/bookmarks/add"
+  >
     <mat-icon>add</mat-icon>
   </button>
 </mat-toolbar>

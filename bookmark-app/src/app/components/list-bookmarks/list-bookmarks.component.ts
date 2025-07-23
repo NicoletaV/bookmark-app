@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { MatDivider, MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
- import { MatListModule } from '@angular/material/list'; 
+import { MatListModule } from '@angular/material/list'; 
 import { catchError, from, map, Observable, shareReplay } from 'rxjs';
 import { Bookmark } from 'src/app/models/bookmark/bookmark';
 import { BookmarkService } from 'src/app/services/bookmark/bookmark.service';
@@ -17,7 +16,6 @@ import { FilterPipe } from 'src/app/utils/filter-pipe.pipe';
     CommonModule,
     MatListModule,
     MatIconModule,
-    MatDividerModule,
     FilterPipe,
   ]
 })
